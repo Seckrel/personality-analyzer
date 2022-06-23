@@ -6,7 +6,7 @@ export default function Home() {
         <Container
             fluid
             px={'xl'}
-            sx={{ height: "100%" }}
+            sx={{ height: "100%", overflow:"auto" }}
         >
             <Group
                 position="center"

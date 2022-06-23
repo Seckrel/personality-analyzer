@@ -13,12 +13,14 @@ export default function Layout() {
             styles={(theme) => ({
                 main: {
                     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                    overflow: "auto",
+                    padding: theme.spacing.xl
                 },
                 body: {
                     position: 'absolute',
                     top: 70,
                     bottom: 60,
-                    overflow: "auto"
+
                 }
             })}
         >
