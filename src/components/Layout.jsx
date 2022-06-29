@@ -2,6 +2,12 @@ import { AppShell } from '@mantine/core';
 import CustomizedFooter from './FooterComponent';
 import CutomizedHeader from './HeaderComponent';
 import Home from './pages/Home';
+import ResumeAnalysis from './pages/ResumeAnalaysis';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
 
 export default function Layout() {
     return (
@@ -24,7 +30,12 @@ export default function Layout() {
                 }
             })}
         >
-            <Home />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/resume_analysis" element={<ResumeAnalysis />} />
+                </Routes>
+            </BrowserRouter>
         </AppShell>
     )
 }

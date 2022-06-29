@@ -2,6 +2,7 @@
   "name": "personality-analyzer",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://127.0.0.1:8000/",
   "dependencies": {
     "@mantine/core": "^4.2.10",
     "@mantine/dropzone": "^4.2.10",
@@ -9,8 +10,12 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "axios": "^0.27.2",
+    "chart.js": "^3.8.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^4.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "tabler-icons-react": "^1.50.0",
     "web-vitals": "^2.1.0"

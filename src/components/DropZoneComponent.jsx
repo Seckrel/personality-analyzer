@@ -1,8 +1,10 @@
-import { Group, Text, useMantineTheme, Stack, Title } from '@mantine/core';
-import { Upload, Photo, X, Icon as TablerIcon } from 'tabler-icons-react';
+import { Group, Text, useMantineTheme, Stack, Button } from '@mantine/core';
+import { Upload, Photo, X } from 'tabler-icons-react';
 import { PDF_MIME_TYPE, FullScreenDropzone } from '@mantine/dropzone';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { maxCheck, filterRedundancy } from '../utils/validators';
+import { UploadFiles } from '../utils/api';
 import ListFiles from './ListFilesComponent';
 
 function getIconColor(status, theme) {
@@ -51,11 +53,14 @@ export default function CustomizedDZ() {
     const MAX_SIZE_MB = 5;
     const MAX_SIZE = MAX_SIZE_MB * 1000 ** 2; // in bytes (1 Kb = 1000 bytes);
     const theme = useMantineTheme();
+    const navigate = useNavigate();
+
     const [state, setState] = useState([]);
     const [currentFiles, setCurrentFiles] = useState([]);
+
     const [error, setError] = useState({
         flag: false,
-        msg: ""
+        msg: "",
     })
 
     useEffect(() => {
@@ -73,6 +78,15 @@ export default function CustomizedDZ() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentFiles])
 
+    const handleSubmit = async e => {
+        try {
+            const value = await UploadFiles(state, e);
+            navigate("resume_analysis", { state: value });
+        } catch (err) {
+            setError({flag: true, msg: err.message})
+        }
+    }
+
 
     return (
         <Stack align={"center"} sx={{ height: "100%" }}>
@@ -87,7 +101,7 @@ export default function CustomizedDZ() {
                             Attach as many files as you like (only PDF)
                         </Text>
                     </div>
-                ): (
+                ) : (
                     <div>
                         <Text size='xl' inline>
                             Add More
@@ -106,6 +120,11 @@ export default function CustomizedDZ() {
                 <Text sx={theme => ({ color: theme.colors.red[4], display: 'flex', alignItems: "center" })} size={'xl'}>
                     <X size={20} ml={2} />{error.msg}
                 </Text>
+            )}
+            {state.length > 0 && (
+                <Button type='button' onClick={handleSubmit}>
+                    Upload
+                </Button>
             )}
             {state.length > 0 &&
                 (<ListFiles
