@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { Table } from '@mantine/core';
-import { useHover } from '@mantine/hooks';
 import { useState } from "react";
 import PAModal from "../PACModalComponent";
 
@@ -15,14 +14,13 @@ const TableHead = ({ heads }) => (
     </thead>
 )
 
-const TableBody = ({ data, reference, hovered, handleGraphView }) => (
+const TableBody = ({ data, handleGraphView }) => (
     <tbody>
         {data.map((datum, index) => (
             <tr
                 key={`${index}-${datum[0]}`} r
-                ref={reference}
                 data-attribute={index}
-                style={{ cursor: hovered ? "pointer" : null }}
+                style={{ cursor: "pointer" }}
                 onClick={handleGraphView}
             >
                 {datum.map((item, index) => (
@@ -37,33 +35,28 @@ const TableBody = ({ data, reference, hovered, handleGraphView }) => (
 
 export default function ResumeAnalysis() {
     const { state } = useLocation();
-    const { hovered, ref } = useHover();
     const [opened, setOpened] = useState(false);
     const [charData, setChartData] = useState(null);
 
-    const handleGraphView = () => {
+    const handleGraphView = (e) => {
         setOpened(!opened);
-        const indexValue = ref.current?.getAttribute("data-attribute");
+        const indexValue = e.currentTarget.getAttribute("data-attribute");
         setChartData(state.data[indexValue]);
     }
 
     return (
         <>
-            <Table highlightOnHover horizontalSpacing="xs" verticalSpacing="md" fontSize="sm">
+            <Table highlightOnHover="true" horizontalSpacing="xs" verticalSpacing="md" fontSize="sm">
                 <TableHead heads={state.columns} />
                 <TableBody data={state.data}
-                    reference={ref}
-                    hovered={hovered}
                     handleGraphView={handleGraphView}
                 />
             </Table>
-            {opened && (
-                <PAModal
-                    opened={opened}
-                    setOpened={setOpened}
-                    charData={charData}
-                />
-            )}
+            <PAModal
+                opened={opened}
+                setOpened={setOpened}
+                charData={charData}
+            />
         </>
     )
 }
