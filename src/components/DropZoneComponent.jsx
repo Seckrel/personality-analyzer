@@ -2,7 +2,7 @@ import { Group, Text, useMantineTheme, Stack, Button } from '@mantine/core';
 import { Upload, Photo, X } from 'tabler-icons-react';
 import { PDF_MIME_TYPE, FullScreenDropzone } from '@mantine/dropzone';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { maxCheck, filterRedundancy } from '../utils/validators';
 import { UploadFiles } from '../utils/api';
 import ListFiles from './ListFilesComponent';
@@ -54,6 +54,7 @@ export default function CustomizedDZ() {
     const MAX_SIZE = MAX_SIZE_MB * 1000 ** 2; // in bytes (1 Kb = 1000 bytes);
     const theme = useMantineTheme();
     const navigate = useNavigate();
+    const { state: errorState } = useLocation();
 
     const [state, setState] = useState([]);
     const [currentFiles, setCurrentFiles] = useState([]);
@@ -83,13 +84,16 @@ export default function CustomizedDZ() {
             const value = await UploadFiles(state, e);
             navigate("resume_analysis", { state: value });
         } catch (err) {
-            setError({flag: true, msg: err.message})
+            setError({ flag: true, msg: err.message })
         }
     }
 
 
     return (
         <Stack align={"center"} sx={{ height: "100%" }}>
+            {errorState && (
+                {errorState}
+            )}
             <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
                 <Photo size={80} />
                 {state.length === 0 ? (

@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Table } from '@mantine/core';
 import { useState } from "react";
-import PAModal from "../PACModalComponent";
+import CustomModal from "../ModalComponent";
 
 
 const TableHead = ({ heads }) => (
@@ -37,6 +37,7 @@ export default function ResumeAnalysis() {
     const { state } = useLocation();
     const [opened, setOpened] = useState(false);
     const [charData, setChartData] = useState(null);
+    const navigate = useNavigate();
 
     const handleGraphView = (e) => {
         setOpened(!opened);
@@ -44,6 +45,12 @@ export default function ResumeAnalysis() {
         setChartData(state.data[indexValue]);
     }
 
+    if (state === null) return (
+        <div>
+            Please go back and add some files
+            <button onClick={() => navigate("/")}>Go back</button>
+        </div>
+    )
     return (
         <>
             <Table highlightOnHover="true" horizontalSpacing="xs" verticalSpacing="md" fontSize="sm">
@@ -52,11 +59,11 @@ export default function ResumeAnalysis() {
                     handleGraphView={handleGraphView}
                 />
             </Table>
-            <PAModal
+            {opened && (<CustomModal
                 opened={opened}
                 setOpened={setOpened}
                 charData={charData}
-            />
+            />)}
         </>
     )
 }
