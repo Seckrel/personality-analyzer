@@ -1,40 +1,33 @@
-import { Modal, Button, Box } from "@mantine/core";
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    ArcElement,
-    Tooltip,
-    Legend,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-} from 'chart.js';
+import { Modal, Button, Box, Container } from "@mantine/core";
 import { useState } from 'react';
 import SpiderGraph from "./SpiderGraphComponent";
 import { ArrowBigLeftLine, ArrowBigRightLine } from 'tabler-icons-react';
 import BarGraph from "./BarGraphComponent";
 
 
-ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
-
 export default function CustomModal({ opened, setOpened, charData }) {
     const [isBarGraph, setIsBarGraph] = useState(false);
+
+    const classes = {
+        button: {
+            marginBottom: "20px"
+        }
+    }
 
     return (
         <Modal
             overflow="inside"
             opened={opened}
             centered
-            size={"xl"}
+            size={"lg"}
             overlayBlur={1.2}
             overlayOpacity={0.05}
-            onClose={() => setOpened(false)
-            }
-            title={`Polar Area Chart for ${charData[0]}`}
+            onClose={() => setOpened(false)}
         >
+            {/* <Box width={"580px"} height={"580px"}> */}
             {!isBarGraph ? (
                 <>
-                    <Box sx={{ display: "flex", justifyContent: "right" }}>
+                    <Box sx={{ display: "flex", justifyContent: "right" }} style={classes.button}>
                         <Button onClick={() => setIsBarGraph(true)}>
                             Bar
                             <ArrowBigRightLine
@@ -49,20 +42,21 @@ export default function CustomModal({ opened, setOpened, charData }) {
                 </>
             ) : (
                 <>
-                    <Button onClick={() => setIsBarGraph(false)}>
-                        <ArrowBigLeftLine
-                            size={25}
-                            strokeWidth={2}
-                        />
-                        Polar Graph
-                    </Button>
+                    <Box sx={{ display: "flex", justifyContent: "left" }} style={classes.button}>
+                        <Button onClick={() => setIsBarGraph(false)}>
+                            <ArrowBigLeftLine
+                                size={25}
+                                strokeWidth={2}
+                            />
+                            Polar Graph
+                        </Button>
+                    </Box>
                     <BarGraph
                         charData={charData}
                     />
                 </>
-            )
-            }
+            )}
+            {/* </Box> */}
         </Modal >
-
     )
 }

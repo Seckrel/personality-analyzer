@@ -29,9 +29,10 @@ export default function SpiderGraph({ charData }) {
             ],
             borderWidth: 0
         }]
-    }), [charData[charData?.length - 1]]);
+    }), [charData]);
 
     const options = useMemo(() => ({
+        // maintainAspectRatio: false,
         animation: {
             duration: 1000
         },
@@ -62,7 +63,7 @@ export default function SpiderGraph({ charData }) {
                 animate: false
             },
         }
-    }), []);
+    }), [charData]);
 
 
     return (

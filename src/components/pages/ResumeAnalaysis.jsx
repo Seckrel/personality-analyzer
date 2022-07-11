@@ -2,7 +2,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Table } from '@mantine/core';
 import { useState } from "react";
 import CustomModal from "../ModalComponent";
+import {
+    Chart as ChartJS,
+    RadialLinearScale,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+} from 'chart.js';
 
+ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 const TableHead = ({ heads }) => (
     <thead>
