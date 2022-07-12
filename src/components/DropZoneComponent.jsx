@@ -1,4 +1,8 @@
-import { Group, Text, useMantineTheme, Stack, Button } from '@mantine/core';
+import {
+    Group, Text, useMantineTheme,
+    Stack, Button, LoadingOverlay,
+    RingProgress, Loader, Center
+} from '@mantine/core';
 import { Upload, Photo, X } from 'tabler-icons-react';
 import { PDF_MIME_TYPE, FullScreenDropzone } from '@mantine/dropzone';
 import { useState, useEffect } from 'react';
@@ -48,6 +52,43 @@ const dropzoneChildren = (status, theme) => (
     </Group>
 );
 
+const CustomLoader = ({ progress }) => {
+    const CustomLoaderSVG = () => (<Loader color="green" size="xl" variant="bars" />)
+    return (
+        <>
+            {(progress?.progress < 100) ? (
+                <RingProgress
+                    label={
+                        <Text color="orange" weight={700} align="center" size="xl">
+                            {progress.progress} %
+                        </Text>
+                    }
+                    size={150}
+                    thickness={12}
+                    roundCaps
+                    sections={[
+                        { value: progress?.progress, color: 'orange' },
+                    ]}
+                />
+            ) : (
+                <RingProgress
+                    label={
+                        <Center>
+                            <CustomLoaderSVG />
+                        </Center>
+                    }
+                    size={150}
+                    thickness={12}
+                    roundCaps
+                    sections={[
+                        { value: 100, color: 'green' },
+                    ]}
+                />
+            )}
+        </>
+    )
+}
+
 
 export default function CustomizedDZ() {
     const MAX_SIZE_MB = 5;
@@ -58,6 +99,10 @@ export default function CustomizedDZ() {
 
     const [state, setState] = useState([]);
     const [currentFiles, setCurrentFiles] = useState([]);
+    const [progress, setProgress] = useState({
+        isUploading: false,
+        progress: 0
+    })
 
     const [error, setError] = useState({
         flag: false,
@@ -81,7 +126,8 @@ export default function CustomizedDZ() {
 
     const handleSubmit = async e => {
         try {
-            const value = await UploadFiles(state, e);
+            setProgress(curr => ({ ...curr, isUploading: true }))
+            const value = await UploadFiles(state, e, setProgress);
             navigate("resume_analysis", { state: value });
         } catch (err) {
             setError({ flag: true, msg: err.message })
@@ -90,50 +136,55 @@ export default function CustomizedDZ() {
 
 
     return (
-        <Stack align={"center"} sx={{ height: "100%" }}>
-            {errorState && (
-                {errorState}
-            )}
-            <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
-                <Photo size={80} />
-                {state.length === 0 ? (
-                    <div>
-                        <Text size="xl" inline>
-                            Drag resume here or click to select files
-                        </Text>
-                        <Text size="sm" color="dimmed" inline mt={7}>
-                            Attach as many files as you like (only PDF)
-                        </Text>
-                    </div>
-                ) : (
-                    <div>
-                        <Text size='xl' inline>
-                            Add More
-                        </Text>
-                    </div>
+        <>
+            <LoadingOverlay visible={progress.isUploading}
+                loader={<CustomLoader progress={progress} />}
+            />
+            <Stack align={"center"} sx={{ height: "100%" }}>
+                {errorState && (
+                    { errorState }
                 )}
+                <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
+                    <Photo size={80} />
+                    {state.length === 0 ? (
+                        <div>
+                            <Text size="xl" inline>
+                                Drag resume here or click to select files
+                            </Text>
+                            <Text size="sm" color="dimmed" inline mt={7}>
+                                Attach as many files as you like (only PDF)
+                            </Text>
+                        </div>
+                    ) : (
+                        <div>
+                            <Text size='xl' inline>
+                                Add More
+                            </Text>
+                        </div>
+                    )}
 
-            </Group>
-            <FullScreenDropzone
-                onDrop={(files) => setCurrentFiles(files)}
-                accept={PDF_MIME_TYPE}
-            >
-                {(status) => dropzoneChildren(status, theme)}
-            </FullScreenDropzone>
-            {error.flag && (
-                <Text sx={theme => ({ color: theme.colors.red[4], display: 'flex', alignItems: "center" })} size={'xl'}>
-                    <X size={20} ml={2} />{error.msg}
-                </Text>
-            )}
-            {state.length > 0 && (
-                <Button type='button' onClick={handleSubmit}>
-                    Upload
-                </Button>
-            )}
-            {state.length > 0 &&
-                (<ListFiles
-                    files={state}
-                />)}
-        </Stack>
+                </Group>
+                <FullScreenDropzone
+                    onDrop={(files) => setCurrentFiles(files)}
+                    accept={PDF_MIME_TYPE}
+                >
+                    {(status) => dropzoneChildren(status, theme)}
+                </FullScreenDropzone>
+                {error.flag && (
+                    <Text sx={theme => ({ color: theme.colors.red[4], display: 'flex', alignItems: "center" })} size={'xl'}>
+                        <X size={20} ml={2} />{error.msg}
+                    </Text>
+                )}
+                {state.length > 0 && (
+                    <Button type='button' onClick={handleSubmit}>
+                        Upload
+                    </Button>
+                )}
+                {state.length > 0 &&
+                    (<ListFiles
+                        files={state}
+                    />)}
+            </Stack>
+        </>
     )
 }

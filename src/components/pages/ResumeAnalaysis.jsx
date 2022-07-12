@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Table } from '@mantine/core';
+import { Table, Notification, Button, Text } from '@mantine/core';
 import { useState } from "react";
 import CustomModal from "../ModalComponent";
+import { X } from 'tabler-icons-react';
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -56,11 +57,14 @@ export default function ResumeAnalysis() {
         setChartData(state.data[indexValue]);
     }
 
+
     if (state === null) return (
-        <div>
-            Please go back and add some files
-            <button onClick={() => navigate("/")}>Go back</button>
-        </div>
+        <Notification color={"red"} icon={<X size={18} />}>
+            <div style={{ display: "flex" }}>
+                <Text sx={{ lineHeight: 2 }}>Please go back and add some files</Text>
+                <Button ml={"auto"} sx={{ display: "block" }} color={"red"} onClick={() => navigate("/")}>Go back</Button>
+            </div>
+        </Notification>
     )
     return (
         <>

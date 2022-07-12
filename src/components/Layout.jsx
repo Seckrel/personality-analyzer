@@ -9,33 +9,36 @@ import {
     Route,
 } from "react-router-dom";
 
+
 export default function Layout() {
     return (
-        <AppShell
-            padding="md"
-            navbar={null}
-            header={<CutomizedHeader />}
-            footer={<CustomizedFooter />}
-            styles={(theme) => ({
-                main: {
-                    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-                    overflow: "auto",
-                    padding: theme.spacing.xl
-                },
-                body: {
-                    position: 'absolute',
-                    top: 70,
-                    bottom: 60,
+        <BrowserRouter>
+            <AppShell
+                padding="md"
+                navbar={null}
+                header={<CutomizedHeader />}
+                footer={<CustomizedFooter />}
+                styles={(theme) => ({
+                    main: {
+                        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                        overflow: "auto",
+                        padding: theme.spacing.xl
+                    },
+                    body: {
+                        position: 'absolute',
+                        top: 70,
+                        bottom: 60,
 
-                }
-            })}
-        >
-            <BrowserRouter>
+                    }
+                })}
+            >
+                
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/resume_analysis" element={<ResumeAnalysis />} />
                 </Routes>
-            </BrowserRouter>
-        </AppShell>
+            </AppShell>
+        </BrowserRouter>
+
     )
 }

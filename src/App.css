@@ -9,3 +9,19 @@ body {
 #root {
   height: 100vh;
 }
+
+.my-line {
+  animation: draw_in 0.3s;
+  stroke-dasharray: 100%;
+  width: 100px;   
+}
+
+@keyframes draw_in {
+  from: {
+     stroke-dashoffset: 0%;
+  }
+  to: {
+     stroke-dashoffset: 100%;
+  }
+}
+
