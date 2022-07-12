@@ -1,15 +1,16 @@
 import {
     Group, Text, useMantineTheme,
     Stack, Button, LoadingOverlay,
-    RingProgress, Loader, Center
 } from '@mantine/core';
 import { Upload, Photo, X } from 'tabler-icons-react';
 import { PDF_MIME_TYPE, FullScreenDropzone } from '@mantine/dropzone';
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { maxCheck, filterRedundancy } from '../utils/validators';
 import { UploadFiles } from '../utils/api';
 import ListFiles from './ListFilesComponent';
+import CustomLoader from './LoaderComponent';
+import Notify from './NotificationComponent';
 
 function getIconColor(status, theme) {
     return status.accepted
@@ -52,50 +53,12 @@ const dropzoneChildren = (status, theme) => (
     </Group>
 );
 
-const CustomLoader = ({ progress }) => {
-    const CustomLoaderSVG = () => (<Loader color="green" size="xl" variant="bars" />)
-    return (
-        <>
-            {(progress?.progress < 100) ? (
-                <RingProgress
-                    label={
-                        <Text color="orange" weight={700} align="center" size="xl">
-                            {progress.progress} %
-                        </Text>
-                    }
-                    size={150}
-                    thickness={12}
-                    roundCaps
-                    sections={[
-                        { value: progress?.progress, color: 'orange' },
-                    ]}
-                />
-            ) : (
-                <RingProgress
-                    label={
-                        <Center>
-                            <CustomLoaderSVG />
-                        </Center>
-                    }
-                    size={150}
-                    thickness={12}
-                    roundCaps
-                    sections={[
-                        { value: 100, color: 'green' },
-                    ]}
-                />
-            )}
-        </>
-    )
-}
-
 
 export default function CustomizedDZ() {
     const MAX_SIZE_MB = 5;
     const MAX_SIZE = MAX_SIZE_MB * 1000 ** 2; // in bytes (1 Kb = 1000 bytes);
     const theme = useMantineTheme();
     const navigate = useNavigate();
-    const { state: errorState } = useLocation();
 
     const [state, setState] = useState([]);
     const [currentFiles, setCurrentFiles] = useState([]);
@@ -105,22 +68,23 @@ export default function CustomizedDZ() {
     })
 
     const [error, setError] = useState({
-        flag: false,
-        msg: "",
+        error: false,
+        errorMsg: "",
     })
 
     useEffect(() => {
         let tempFilesList = [...currentFiles, ...state];
         if (maxCheck(tempFilesList, MAX_SIZE)) {
-            setError(error => ({
-                ...error,
-                flag: true,
-                msg: `Total File Sizes Must Be less than ${MAX_SIZE / (1000 ** 2)} MB`
+            setError(curr => ({
+                ...curr,
+                error: true,
+                errorMsg: `Total File Sizes Must Be less than ${MAX_SIZE / (1000 ** 2)} MB`
             }));
             return;
-        } else setError({ flag: false, msg: "" })
+        } else setError({ error: false, errorMsg: "" })
         tempFilesList = filterRedundancy(tempFilesList);
-        setState([...tempFilesList]);
+        setState(tempFilesList)
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentFiles])
 
@@ -130,20 +94,25 @@ export default function CustomizedDZ() {
             const value = await UploadFiles(state, e, setProgress);
             navigate("resume_analysis", { state: value });
         } catch (err) {
-            setError({ flag: true, msg: err.message })
+            setError({ error: true, errorMsg: err.message });
+            setProgress(curr => ({ ...curr, isUploading: false}));
         }
     }
 
 
     return (
         <>
+            <Notify
+                activate={error.error}
+                setActivate={setError}
+                errorMsg={error.errorMsg}
+                duration={5000}
+                bottomPosition={"5px"}
+            />
             <LoadingOverlay visible={progress.isUploading}
                 loader={<CustomLoader progress={progress} />}
             />
             <Stack align={"center"} sx={{ height: "100%" }}>
-                {errorState && (
-                    { errorState }
-                )}
                 <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
                     <Photo size={80} />
                     {state.length === 0 ? (
@@ -170,11 +139,6 @@ export default function CustomizedDZ() {
                 >
                     {(status) => dropzoneChildren(status, theme)}
                 </FullScreenDropzone>
-                {error.flag && (
-                    <Text sx={theme => ({ color: theme.colors.red[4], display: 'flex', alignItems: "center" })} size={'xl'}>
-                        <X size={20} ml={2} />{error.msg}
-                    </Text>
-                )}
                 {state.length > 0 && (
                     <Button type='button' onClick={handleSubmit}>
                         Upload

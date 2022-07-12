@@ -1,13 +1,12 @@
 import {
     Header, Text, Image,
-    Group, Button, createStyles, Notification
+    Group, Button, createStyles
 } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import { ClearSession } from "../utils/api";
-import { X } from 'tabler-icons-react';
 import { useState } from "react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Notify from "./NotificationComponent";
 
 
 
@@ -32,49 +31,35 @@ export default function CutomizedHeader() {
     const navigate = useNavigate();
     const defaultErrorMsg = "Please go back and add some files";
     const [sessionClearState, setSessionClearState] = useState({
-        notLoadNotification: true,
+        error: false,
         status: null,
         errorMsg: defaultErrorMsg
     })
 
     const handleUploadNew = async () => {
         try {
-            const [sessionClearFlag, status] = await ClearSession();
+            const [error, status] = await ClearSession();
             setSessionClearState(current => ({
                 ...current,
-                notLoadNotification: sessionClearFlag,
+                error: error,
                 status: status
             }))
-            if (sessionClearFlag)
+            if (!error)
                 navigate("/");
+
         } catch (e) {
-            setSessionClearState(curr => ({ ...curr, notLoadNotification: false, errorMsg: e.message }));
+            setSessionClearState(curr =>
+                ({ ...curr, error: true, errorMsg: e.message }));
         }
     }
 
-    const onLoadEffect = () => {
-        setTimeout(() => {
-            setSessionClearState(curr => ({ ...curr, notLoadNotification: true, errorMsg: defaultErrorMsg }));
-        }, 8000);
-    };
-
-    useEffect(() => onLoadEffect, [sessionClearState.notLoadNotification])
-
     return (
         <>
-            {!sessionClearState.notLoadNotification && (
-                <Notification
-                    color={"red"}
-                    icon={<X size={18} />}
-                    classNames={{ root: classes.notifcation }}
-                >
-                    <div style={{ display: "flex" }}>
-                        <Text sx={{ lineHeight: 2 }}>
-                            {sessionClearState.errorMsg}
-                        </Text>
-                    </div>
-                </Notification>
-            )}
+            <Notify
+                errorMsg={sessionClearState.errorMsg}
+                activate={sessionClearState.error}
+                setActivate={setSessionClearState}
+            />
             <Header height={70} pb="md" pr={"xl"} sx={{ top: 0 }}>
                 <Group>
                     <Image

@@ -48,7 +48,6 @@ export default function BarGraph({ charData }) {
             tooltip: {
                 callbacks: {
                     label: (ctx) => {
-                        console.log(ctx);
                         return `${tooltipLabels[ctx.dataIndex][ctx.datasetIndex]} ${(ctx.raw).toFixed(2)}`
                     }
                 }
