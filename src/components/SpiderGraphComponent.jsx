@@ -16,7 +16,7 @@ export default function SpiderGraph({ charData }) {
         ],
         datasets: [{
             label: `Personlaity Type ${charData[charData?.length - 1]}`,
-            data: charData.slice(1, 8),
+            data: charData.slice(1, 9),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.5)',
                 'rgba(54, 162, 235, 0.5)',

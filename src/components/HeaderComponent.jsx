@@ -24,7 +24,9 @@ const useStyle = createStyles((theme) => ({
         zIndex: 9999,
         right: "5px",
     }
-}))
+}));
+
+
 export default function CutomizedHeader() {
     const location = useLocation();
     const { classes } = useStyle();
@@ -65,9 +67,11 @@ export default function CutomizedHeader() {
                     <Image
                         width={200}
                         height={70}
-                        fit={"contain"}
-                        src="/logo.svg"
-                        className="my-line"
+                        fit="contain"
+                        src="know_me_log.svg"
+                        sx={{
+                            transform: "rotate(13deg)"
+                        }}
                     />
                     {location.pathname === "/resume_analysis" && (
                         <Group ml={'auto'}>
