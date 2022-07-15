@@ -1,35 +1,16 @@
 import {
-    Header, Text, Image,
-    Group, Button, createStyles
+    Header, Image, Group
 } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import { ClearSession } from "../utils/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Notify from "./NotificationComponent";
-
-
-
-const useStyle = createStyles((theme) => ({
-    root: {
-        background: "none",
-        "&:hover": {
-            color: theme.colors.dark[theme.primaryShade.dark],
-            background: theme.white,
-        }
-    },
-    notifcation: {
-        position: "absolute",
-        bottom: "70px",
-        zIndex: 9999,
-        right: "5px",
-    }
-}));
+import DarkButton from "./DarkButtonComponent";
 
 
 export default function CutomizedHeader() {
     const location = useLocation();
-    const { classes } = useStyle();
     const navigate = useNavigate();
     const defaultErrorMsg = "Please go back and add some files";
     const [sessionClearState, setSessionClearState] = useState({
@@ -75,11 +56,10 @@ export default function CutomizedHeader() {
                     />
                     {location.pathname === "/resume_analysis" && (
                         <Group ml={'auto'}>
-                            <Button className={classes.root} onClick={handleUploadNew}>
-                                <Text>
-                                    Upload New
-                                </Text>
-                            </Button>
+                            <DarkButton
+                                onClick={handleUploadNew}
+                                value={"Upload New"}
+                            />
                         </Group>
                     )}
                 </Group>

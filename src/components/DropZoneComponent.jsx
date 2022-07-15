@@ -1,9 +1,9 @@
 import {
-    Group, Text, useMantineTheme,
-    Stack, Button, LoadingOverlay,
+    Group, Text,
+    Stack, LoadingOverlay,
 } from '@mantine/core';
-import { Upload, Photo, X } from 'tabler-icons-react';
-import { PDF_MIME_TYPE, FullScreenDropzone } from '@mantine/dropzone';
+import { Upload, BrandGoogleAnalytics, Photo, X, NewSection } from 'tabler-icons-react';
+import { PDF_MIME_TYPE, FullScreenDropzone, Dropzone } from '@mantine/dropzone';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { maxCheck, filterRedundancy } from '../utils/validators';
@@ -11,6 +11,8 @@ import { UploadFiles } from '../utils/api';
 import ListFiles from './ListFilesComponent';
 import CustomLoader from './LoaderComponent';
 import Notify from './NotificationComponent';
+import { useRef } from 'react';
+import DarkButton from './DarkButtonComponent';
 
 function getIconColor(status, theme) {
     return status.accepted
@@ -57,7 +59,6 @@ const dropzoneChildren = (status, theme) => (
 export default function CustomizedDZ() {
     const MAX_SIZE_MB = 5;
     const MAX_SIZE = MAX_SIZE_MB * 1000 ** 2; // in bytes (1 Kb = 1000 bytes);
-    const theme = useMantineTheme();
     const navigate = useNavigate();
 
     const [state, setState] = useState([]);
@@ -66,6 +67,7 @@ export default function CustomizedDZ() {
         isUploading: false,
         progress: 0
     })
+    const dropZoneRef = useRef();
 
     const [error, setError] = useState({
         error: false,
@@ -95,7 +97,7 @@ export default function CustomizedDZ() {
             navigate("resume_analysis", { state: value });
         } catch (err) {
             setError({ error: true, errorMsg: err.message });
-            setProgress(curr => ({ ...curr, isUploading: false}));
+            setProgress(curr => ({ ...curr, isUploading: false }));
         }
     }
 
@@ -116,18 +118,20 @@ export default function CustomizedDZ() {
                 <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
                     <Photo size={80} />
                     {state.length === 0 ? (
-                        <div>
-                            <Text size="xl" inline>
-                                Drag resume here or click to select files
-                            </Text>
-                            <Text size="sm" color="dimmed" inline mt={7}>
-                                Attach as many files as you like (only PDF)
-                            </Text>
-                        </div>
+                        <>
+                            <div>
+                                <Text size="xl" inline>
+                                    Drag resume here or click to select files
+                                </Text>
+                                <Text size="sm" color="dimmed" inline mt={7}>
+                                    Attach as many files as you like (only PDF)
+                                </Text>
+                            </div>
+                        </>
                     ) : (
                         <div>
                             <Text size='xl' inline>
-                                Add More
+                                Add More Files
                             </Text>
                         </div>
                     )}
@@ -137,16 +141,37 @@ export default function CustomizedDZ() {
                     onDrop={(files) => setCurrentFiles(files)}
                     accept={PDF_MIME_TYPE}
                 >
-                    {(status) => dropzoneChildren(status, theme)}
+                    {(_) => { }}
                 </FullScreenDropzone>
-                {state.length > 0 && (
-                    <Button type='button' onClick={handleSubmit}>
-                        Upload
-                    </Button>
-                )}
+
+                <Dropzone
+                    onDrop={files => setCurrentFiles(files)}
+                    accept={PDF_MIME_TYPE}
+                    openRef={dropZoneRef}
+                    sx={{ display: "none" }}
+                >
+                    {() => { }}
+                </Dropzone>
+                <Group mt="-20px" spacing={"xs"}>
+                    <DarkButton
+                        border
+                        onClick={() => dropZoneRef.current()}
+                        Icon={NewSection}
+                        value={state.length === 0 ? ("Select Files") : "Add More"} />
+                    {state.length > 0 && (
+                        <DarkButton
+                            type='button'
+                            onClick={handleSubmit}
+                            border
+                            value={"Analyze"}
+                            Icon={BrandGoogleAnalytics}
+                        />
+                    )}
+                </Group>
                 {state.length > 0 &&
                     (<ListFiles
                         files={state}
+                        removeFile={setState}
                     />)}
             </Stack>
         </>
