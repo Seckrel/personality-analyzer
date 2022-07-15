@@ -15,7 +15,7 @@ export default function Layout() {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
-        return () => setTimeout(() => setInitialLoading(false), 1200);
+        return () => setTimeout(() => setInitialLoading(false), 2000);
     }, [])
 
     if (initialLoading) {
