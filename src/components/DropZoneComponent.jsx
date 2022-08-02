@@ -120,7 +120,7 @@ export default function CustomizedDZ() {
                     {state.length === 0 ? (
                         <>
                             <div>
-                                <Text size="xl" inline>
+                                <Text size="xl" inline id="screen-test-id">
                                     Drag resume here or click to select files
                                 </Text>
                                 <Text size="sm" color="dimmed" inline mt={7}>

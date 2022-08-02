@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 import { PolarArea } from 'react-chartjs-2';
+import React from 'react';
 
 
-export default function SpiderGraph({ charData }) {
+function SpiderGraph({ charData }) {
     const data = useMemo(() => ({
         labels: [
             "Introvert",
@@ -34,7 +35,7 @@ export default function SpiderGraph({ charData }) {
     const options = useMemo(() => ({
         // maintainAspectRatio: false,
         animation: {
-            duration: 1000
+            duration: 900
         },
         font: {
             size: 20
@@ -52,6 +53,8 @@ export default function SpiderGraph({ charData }) {
         },
         scales: {
             r: {
+                min: 0,
+                max: 100,
                 ticks: {
                     stepSize: 15,
                     backdropColor: "rgba(255, 255, 255, 0)",
@@ -67,9 +70,11 @@ export default function SpiderGraph({ charData }) {
 
 
     return (
-        <PolarArea 
+        <PolarArea
             data={data}
             options={options}
         />
     )
 }
+
+export default React.memo(SpiderGraph);

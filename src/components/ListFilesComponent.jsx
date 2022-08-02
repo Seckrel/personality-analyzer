@@ -2,6 +2,10 @@ import { Stack, Paper, Text, Title, ActionIcon, Group } from '@mantine/core';
 import { X } from 'tabler-icons-react';
 
 export default function ListFiles({ files, removeFile }) {
+    const handleRemoveFile = (fileObj) => removeFile(
+        files.filter(file => file.name !== fileObj.name)
+    );
+
     return (
         <Stack spacing="lg"
             align={"center"}
@@ -16,11 +20,15 @@ export default function ListFiles({ files, removeFile }) {
                 <Paper key={file.name}
                     sx={theme => ({ width: "100%", padding: theme.spacing.md })}>
                     <Group grow>
-                        <Text size={'xl'} align="center">
+                        <Text size={'xl'} align="center" sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis"
+                        }}>
                             {file.name}
                         </Text>
                         <ActionIcon
                             color={"red"}
+                            onClick={() => handleRemoveFile(file)}
                         >
                             <X />
                         </ActionIcon>

@@ -13,10 +13,12 @@ const useStyles = createStyles((theme, border) => ({
 
 
 export default function DarkButton({
-    value, border = false, Icon = null, rightIcon = false, ...props }) {
+    value = "", border = false, Icon = null, rightIcon = false, ref = null, ...props }) {
     const { classes } = useStyles(border);
+
     return (
         <Button {...props}
+            ref={ref}
             className={classes.root}
             rightIcon={rightIcon && Icon ? (<Icon />) : null}
             leftIcon={!rightIcon && Icon ? (<Icon />) : null}

@@ -1,7 +1,8 @@
 import { useMemo } from "react"
 import { Bar } from "react-chartjs-2";
+import React from 'react';
 
-export default function BarGraph({ charData }) {
+function BarGraph({ charData }) {
     const trasposeData = useMemo(() => {
         const arr = []
         const slicedCharData = charData.slice(1, 9);
@@ -39,10 +40,16 @@ export default function BarGraph({ charData }) {
 
     const options = useMemo(() => ({
         animation: {
-            duration: 1000
+            duration: 900
         },
         font: {
             size: 20
+        },
+        scales: {
+            y: {
+                min: 0,
+                max: 100
+            }
         },
         plugins: {
             tooltip: {
@@ -66,10 +73,10 @@ export default function BarGraph({ charData }) {
     ), [charData, tooltipLabels]);
     return (
         <Bar
-            // width={"580px"}
-            // height={"580px"}
             data={data}
             options={options}
         />
     )
 };
+
+export default React.memo(BarGraph);
