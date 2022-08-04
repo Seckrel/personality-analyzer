@@ -3,6 +3,7 @@ import CustomizedFooter from './FooterComponent';
 import CutomizedHeader from './HeaderComponent';
 import Home from './pages/Home';
 import ResumeAnalysis from './pages/ResumeAnalaysis';
+import HowToUse from './pages/HowToUse';
 import {
     BrowserRouter,
     Routes,
@@ -60,6 +61,7 @@ export default function Layout() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/resume_analysis" element={<ResumeAnalysis />} />
+                    <Route path="/how-to-use" element={<HowToUse />} />
                 </Routes>
             </AppShell>
         </BrowserRouter>
