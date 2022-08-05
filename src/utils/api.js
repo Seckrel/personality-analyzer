@@ -18,6 +18,7 @@ const UploadFiles = async (files, e, setProgress) => {
     }
     try {
         const res = await axios.post("predictor", form, config)
+        localStorage.setItem("data", JSON.stringify(res.data));
         return res.data
     } catch (e) {
         throw new Error(`${e.response.statusText} | ${e.response.status}`);

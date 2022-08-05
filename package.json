@@ -8,6 +8,7 @@
     "@mantine/dropzone": "^4.2.10",
     "@mantine/hooks": "^4.2.10",
     "@mantine/modals": "^5.0.2",
+    "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",

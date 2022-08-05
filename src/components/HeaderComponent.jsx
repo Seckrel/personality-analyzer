@@ -45,6 +45,7 @@ export default function CutomizedHeader() {
         <Group>
           <Image
             component={Link}
+            onClick={handleUploadNew}
             to="/"
             width={200}
             height={70}

@@ -1,14 +1,19 @@
-import './App.css';
-import Layout from './components/Layout';
-import { MantineProvider } from '@mantine/core';
+import "./App.css";
+import Layout from "./components/Layout";
+import { MantineProvider } from "@mantine/core";
 
 const theme = {
-  colorScheme: 'dark',
-}
+  colorScheme: "dark",
+};
 
 function App() {
   return (
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
+    <MantineProvider
+      theme={theme}
+      withGlobalStyles
+      withNormalizeCSS
+      withCSSVariables
+    >
       <Layout />
     </MantineProvider>
   );

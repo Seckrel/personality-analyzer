@@ -1,6 +1,7 @@
 import { AppShell, Center } from '@mantine/core';
 import CustomizedFooter from './FooterComponent';
 import CutomizedHeader from './HeaderComponent';
+import  Error404 from './pages/Error404';
 import Home from './pages/Home';
 import ResumeAnalysis from './pages/ResumeAnalaysis';
 import HowToUse from './pages/HowToUse';
@@ -62,6 +63,7 @@ export default function Layout() {
                     <Route path="/" element={<Home />} />
                     <Route path="/resume_analysis" element={<ResumeAnalysis />} />
                     <Route path="/how-to-use" element={<HowToUse />} />
+                    <Route path="/404" element={<Error404 />} />
                 </Routes>
             </AppShell>
         </BrowserRouter>
