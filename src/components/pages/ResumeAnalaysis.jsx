@@ -23,6 +23,7 @@ import {
 } from "chart.js";
 import React from "react";
 import { arrayRange } from "../../utils/table.utils";
+import HelperVisulization from "../HelperVisulization";
 
 ChartJS.register(
   RadialLinearScale,
@@ -55,7 +56,7 @@ const TableBody = ({ data, handleGraphView, displayRange }) => (
     {arrayRange(data, displayRange.start, displayRange.end).map(
       (datum, index) => (
         <tr
-        className={"tooltip"}
+          className={"tooltip"}
           key={`${index}-${datum[0]}`}
           data-attribute={index}
           style={{ cursor: "pointer" }}
@@ -125,6 +126,7 @@ function ResumeAnalysis() {
     );
   return (
     <>
+      <HelperVisulization />
       <ScrollArea style={{ height: "620px" }}>
         <Table
           highlightOnHover="true"

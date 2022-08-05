@@ -11,13 +11,14 @@ import {
     Route,
 } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { timeout } from '../utils/timeout.utils';
 
 
 export default function Layout() {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
-        return () => setTimeout(() => setInitialLoading(false), 2000);
+        return () => timeout(setInitialLoading, 2000);
     }, [])
 
     if (initialLoading) {
