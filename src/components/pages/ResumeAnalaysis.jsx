@@ -4,7 +4,6 @@ import {
   Notification,
   ScrollArea,
   Button,
-  Box,
   Text,
   Pagination,
 } from "@mantine/core";
@@ -56,7 +55,6 @@ const TableBody = ({ data, handleGraphView, displayRange }) => (
     {arrayRange(data, displayRange.start, displayRange.end).map(
       (datum, index) => (
         <tr
-          className={"tooltip"}
           key={`${index}-${datum[0]}`}
           data-attribute={index}
           style={{ cursor: "pointer" }}
@@ -74,15 +72,16 @@ const TableBody = ({ data, handleGraphView, displayRange }) => (
 const SIZE_PER_PAGE = 10;
 
 function ResumeAnalysis() {
-  // const { state } = useLocation();
   const state = JSON.parse(localStorage.getItem("data"));
   const [opened, setOpened] = useState(false);
   const [charData, setChartData] = useState(null);
   const [activePage, setActivePage] = useState(1);
+  const navigate = useNavigate();
 
+  if (state === null) navigate("/");
   const paginationData = useMemo(
     () => ({
-      total: Math.ceil(state.data.length / SIZE_PER_PAGE),
+      total: Math.ceil(state?.data.length / SIZE_PER_PAGE),
       initial: 1,
       boundaries: 1,
     }),
@@ -93,14 +92,12 @@ function ResumeAnalysis() {
     () => ({
       start: SIZE_PER_PAGE * activePage - SIZE_PER_PAGE,
       end:
-        SIZE_PER_PAGE * activePage < state.data.length
+        SIZE_PER_PAGE * activePage < state?.data.length
           ? SIZE_PER_PAGE * activePage
-          : state.data.length,
+          : state?.data.length,
     }),
     [activePage, state]
   );
-
-  const navigate = useNavigate();
 
   const handleGraphView = (e) => {
     setOpened(!opened);
@@ -110,7 +107,7 @@ function ResumeAnalysis() {
 
   if (state === null)
     return (
-      <Notification color={"red"} icon={<X size={18} />}>
+      <Notification color={"red"} icon={<X size={18} />} disallowClose>
         <div style={{ display: "flex" }}>
           <Text sx={{ lineHeight: 2 }}>Please go back and add some files</Text>
           <Button

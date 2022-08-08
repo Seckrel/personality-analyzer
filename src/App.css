@@ -133,30 +133,4 @@
     animate-svg-fill-3 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 1s both;
 }
 
-.tooltip {
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-}
-
-.tooltip::after {
-  content: "view chart";
-  text-transform: capitalize;
-  color: "white";
-  background-color: var(--mantine-color-gray-2);
-  mix-blend-mode: revert-layer;
-  color: black;
-  display: none;
-  position: absolute;
-  border-radius: 5px;
-  padding: 0 5px;
-  top: 100%;
-  left: 50%;
-  z-index: 999;
-}
-
-
-.tooltip:hover::after {
-  display: block;
-}
 

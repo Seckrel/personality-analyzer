@@ -35,7 +35,7 @@ const ClearSession = async () => {
         const { data, status } = await axios.post("predictor/clear-session", {}, config)
         return [data.error, status]
     } catch (e) {
-        throw new Error(`${e.response.statusText} | ${e.response.status}`);
+        throw new Error(`${e?.response.statusText} | ${e?.response.status}`);
     }
 }
 

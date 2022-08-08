@@ -1,4 +1,4 @@
-import { Timeline, Button, ThemeIcon, Image, List } from "@mantine/core";
+import { Timeline, ThemeIcon, Image, List } from "@mantine/core";
 import { AccordionContent, AccordionTitle } from "../utils/accordion.utils";
 import { CircleCheck } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dialog, Group, Text, Transition, Box } from "@mantine/core";
+import { Dialog, Group, Text } from "@mantine/core";
 import { timeout } from "../utils/timeout.utils";
 
 const HelperVisulization = () => {

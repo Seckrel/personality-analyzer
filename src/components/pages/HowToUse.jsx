@@ -1,11 +1,17 @@
-import { Accordion, List, ThemeIcon, Image, AspectRatio } from "@mantine/core";
+import {
+  Accordion,
+  List,
+  ThemeIcon,
+  Image,
+  AspectRatio,
+} from "@mantine/core";
 import { USE_STEPS } from "../../constants/HowToUse";
 import { CircleCheck, CircleX } from "tabler-icons-react";
 import UseSteps from "../UseSteps";
 import { AccordionContent, AccordionTitle } from "../../utils/accordion.utils";
 import { ModalsProvider } from "@mantine/modals";
 
-const GalleryModal = ({ context, id, innerProps }) => {
+const GalleryModal = ({ _, __, innerProps }) => {
   const modalBody = (src, alt, type) => {
     if (type === "image") {
       return (

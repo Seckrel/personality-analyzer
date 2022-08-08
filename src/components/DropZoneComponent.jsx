@@ -1,9 +1,7 @@
 import { Group, Text, Stack, LoadingOverlay } from "@mantine/core";
 import {
-  Upload,
   BrandGoogleAnalytics,
   Photo,
-  X,
   NewSection,
 } from "tabler-icons-react";
 import { PDF_MIME_TYPE, FullScreenDropzone, Dropzone } from "@mantine/dropzone";
@@ -17,50 +15,6 @@ import Notify from "./NotificationComponent";
 import { useRef } from "react";
 import DarkButton from "./DarkButtonComponent";
 
-function getIconColor(status, theme) {
-  return status.accepted
-    ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
-    : status.rejected
-    ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-    : theme.colorScheme === "dark"
-    ? theme.colors.dark[0]
-    : theme.colors.gray[7];
-}
-
-function ImageUploadIcon({ status, ...props }) {
-  if (status.accepted) {
-    return <Upload {...props} />;
-  }
-
-  if (status.rejected) {
-    return <X {...props} />;
-  }
-
-  return <Photo {...props} />;
-}
-
-const dropzoneChildren = (status, theme) => (
-  <Group
-    position="center"
-    spacing="xl"
-    style={{ minHeight: 220, pointerEvents: "none" }}
-  >
-    <ImageUploadIcon
-      status={status}
-      style={{ color: getIconColor(status, theme) }}
-      size={80}
-    />
-
-    <div>
-      <Text size="xl" inline>
-        Drag resume here or click to select files
-      </Text>
-      <Text size="sm" color="dimmed" inline mt={7}>
-        Attach as many files as you like (only PDF)
-      </Text>
-    </div>
-  </Group>
-);
 
 export default function CustomizedDZ() {
   const MAX_SIZE_MB = 5;
@@ -101,7 +55,8 @@ export default function CustomizedDZ() {
   const handleSubmit = async (e) => {
     try {
       setProgress((curr) => ({ ...curr, isUploading: true }));
-      const value = await UploadFiles(state, e, setProgress);
+      // eslint-disable-next-line
+      const _ = await UploadFiles(state, e, setProgress);
       navigate("resume_analysis");
     } catch (err) {
       setError({ error: true, errorMsg: err.message });
