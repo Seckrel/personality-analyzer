@@ -30,7 +30,7 @@ export default function Notify({
   return (
     <>
       {activate && (
-        <Notification color={color} icon={icon()} sx={classes} title={"Error"}>
+        <Notification disallowClose color={color} icon={icon()} sx={classes} title={"Error"}>
           <div style={{ display: "flex" }}>
             <Text sx={{ lineHeight: 2 }}>{errorMsg}</Text>
           </div>
